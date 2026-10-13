@@ -63,9 +63,31 @@ public class BST
     }
     private Node Remove(Node n, int value)
     {
-        // TODO 1: devuelva la nueva raiz del subarbol.
-        // Contemple null, hoja, un hijo y dos hijos. Utilice Minimum(n.Right).
-        throw new NotImplementedException("BST.Remove");
+        //Caso extremo: No existe n
+        if (n == null) return null;
+        //Recorrer el arbol
+        if(value < n.Value){n.Left = Remove(n.Left, value); }
+        
+        else if(value > n.Value){n.Right = Remove(n.Right, value);}
+        
+        //Arbol encontrado!
+        else 
+        {
+            //Caso 1 --> Es una hoja 
+            if(n.Left == null && n.Right == null){ return null; } 
+
+            //Caso 2 --> Tiene un hijo!
+
+            if(n.Left == null){ return n.Right; }
+            if(n.Right == null){return n.Left; }
+
+            //Caso 3 --> Tiene dos hijos!
+
+            n.Value = Minimum(n.Right).Value; //Minimo a la derecha --> Aparte, Minimum devuelve un Nodo, entonces tiene que hacer .Value
+            n.Right = Remove(n.Right, n.Value); //Removemos el repetido
+
+        }
+        return n; 
     }
 }
 
@@ -79,15 +101,30 @@ public class AVL
     }
     public int Balance(Node n) { return n == null ? 0 : Height(n.Left) - Height(n.Right); }
     private Node RotateLeft(Node n)
-    {
-        // TODO 2: conserve el subarbol intermedio; actualice primero n,
-        // luego la nueva raiz. Precondicion: n.Right != null.
-        throw new NotImplementedException("AVL.RotateLeft");
+    {   
+        
+        //Asignar nuevos valores
+        Node newRoot = n.Right;
+        Node arbolIzqRoot = nuevoRoot.Left;
+
+        //Rotar!
+        newRoot.Left = n;
+        n.Right = arbolIzqRoot;
+
+        return newRoot;
     }
     private Node RotateRight(Node n)
-    {
-        // TODO 3: operacion simetrica. Precondicion: n.Left != null.
-        throw new NotImplementedException("AVL.RotateRight");
+    {    
+        //Asignar nuevos valores
+        Node newRoot = n.Left;
+        Node arbolDerRoot = nuevoRoot.Right; //Subarbol derecho
+
+        //Rotar!
+        newRoot.Right = n;
+        n.Left = arbolDerRoot;
+
+        return newRoot;
+        
     }
     public void Insert(int value) { Root = Insert(Root, value); }
     private Node Insert(Node n, int value)
@@ -296,7 +333,7 @@ public class MaxHeap
         while (i > 0)
         {
             int parent = (i - 1) / 2;
-            if (data[parent] >= data[i]) break;
+            if (data[parent] >=                                                                                                                                                                                  data[i]) break;
             Swap(parent, i); i = parent;
         }
     }

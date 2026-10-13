@@ -3,7 +3,7 @@
 **Instituto Tecnológico de Costa Rica — Ingeniería en Computadores**  
 **Modalidad:** parejas, hasta 13 parejas · **Duración:** dos clases de dos horas · **Evaluación:** formativa, sin nota  
 **Entrega y exposición:** al finalizar la segunda clase · **Trabajo fuera de clase:** no requerido ni permitido para completar esta práctica  
-**Lenguaje:** C# · **Integrantes:** __________________________________________
+**Lenguaje:** C# · **Integrantes:** Santiago Allon Quesada - Mathias Araya Gomez - Felipe Guerrero Cervantes 
 
 ## 1. Propósito
 
