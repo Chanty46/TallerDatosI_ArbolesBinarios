@@ -102,14 +102,16 @@ public class AVL
     public int Balance(Node n) { return n == null ? 0 : Height(n.Left) - Height(n.Right); }
     private Node RotateLeft(Node n)
     {   
-        
         //Asignar nuevos valores
         Node newRoot = n.Right;
-        Node arbolIzqRoot = nuevoRoot.Left;
+        Node arbolIzqRoot = newRoot.Left;
 
         //Rotar!
         newRoot.Left = n;
         n.Right = arbolIzqRoot;
+
+        UpdateHeight(n);
+        UpdateHeight(newRoot);
 
         return newRoot;
     }
@@ -117,14 +119,16 @@ public class AVL
     {    
         //Asignar nuevos valores
         Node newRoot = n.Left;
-        Node arbolDerRoot = nuevoRoot.Right; //Subarbol derecho
+        Node arbolDerRoot = newRoot.Right; //Subarbol derecho
 
         //Rotar!
         newRoot.Right = n;
         n.Left = arbolDerRoot;
 
+        UpdateHeight(n);
+        UpdateHeight(newRoot);
+
         return newRoot;
-        
     }
     public void Insert(int value) { Root = Insert(Root, value); }
     private Node Insert(Node n, int value)
@@ -182,7 +186,24 @@ public class RedBlackTree
         // TODO 4: padre y tio son rojos; abuelo existe.
         // Recoloree padre, tio y abuelo. Devuelva el abuelo para continuar
         // la reparacion arriba. FixInsert pintara de negro la raiz al final.
-        throw new NotImplementedException("RedBlackTree.RepairRedUncle");
+        RBNode p = n.Parent;
+        RBNode g = p.Parent;
+        RBNode uncle;
+
+        if (p == g.Left)
+        {
+            uncle = g.Right;
+        }
+        else
+        {
+            uncle = g.Left;
+        }
+
+        p.Red = false;
+        uncle.Red = false;
+        g.Red = true;
+
+        return g;
     }
     private void FixInsert(RBNode n)
     {
@@ -260,14 +281,32 @@ public class SplayTree
         // TODO 5: dos rotaciones del mismo sentido sobre la raiz local.
         // left=true: camino izquierda-izquierda; false: derecha-derecha.
         // Los dos enlaces necesarios existen. Devuelva la nueva raiz.
-        throw new NotImplementedException("SplayTree.ZigZig");
+        if (left)
+        {
+            n = RotateRight(n);
+            return RotateRight(n);
+        }
+        else
+        {
+            n = RotateLeft(n);
+            return RotateLeft(n);
+        }
     }
     private Node ZigZag(Node n, bool left)
     {
         // TODO 6: left=true: camino izquierda-derecha; false: derecha-izquierda.
         // Rote primero el hijo, reasignelo y rote la raiz local.
         // Los dos enlaces necesarios existen. Devuelva la nueva raiz.
-        throw new NotImplementedException("SplayTree.ZigZag");
+        if (left)
+        {
+            n.Left = RotateLeft(n.Left);
+            return RotateRight(n);
+        }
+        else
+        {
+            n.Right = RotateRight(n.Right);
+            return RotateLeft(n);
+        }
     }
     private Node Splay(Node n, int value)
     {
@@ -346,7 +385,30 @@ public class MaxHeap
         // TODO 7: compare con ambos hijos; intercambie con el mayor
         // si supera al padre; continue hasta restaurar el max heap.
         // Debe funcionar con cero hijos o solo un hijo izquierdo.
-        throw new NotImplementedException("MaxHeap.SiftDown");
+        while (true)
+        {
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
+            int largest = i;
+
+            if (left < data.Count && data[left] > data[largest])
+            {
+                largest = left;
+            }
+
+            if (right < data.Count && data[right] > data[largest])
+            {
+                largest = right;
+            }
+
+            if (largest == i)
+            {
+                break;
+            }
+
+            Swap(i, largest);
+            i = largest;
+        }
     }
     public int ExtractMax()
     {
@@ -368,7 +430,22 @@ public class MaxHeap
     {
         // TODO 8: recorra el arreglo y verifique padre >= cada hijo existente.
         // El heap vacio y el de un elemento son validos.
-        throw new NotImplementedException("MaxHeap.IsValid");
+        for (int i = 0; i < data.Count; i++)
+        {
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
+
+            if (left < data.Count && data[i] < data[left])
+            {
+                return false;
+            }
+
+            if (right < data.Count && data[i] < data[right])
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
@@ -477,3 +554,4 @@ public class Program
         });
     }
 }
+
